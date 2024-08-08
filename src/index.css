@@ -1,7 +1,7 @@
-.app-container {
+/* .app-container {
   display: flex;
-  /* height: 100vh; */
-}
+  height: 100vh;
+} */
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
