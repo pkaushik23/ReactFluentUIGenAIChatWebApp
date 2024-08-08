@@ -5,18 +5,31 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import { useNavigate } from 'react-router-dom';
+import { makeStyles } from '@fluentui/react-components';
+
+//Try FluentStyling here.
+const useStyles = makeStyles({
+  appContainer: {
+    maxWidth: '1280px',
+    margin: '0 auto',
+    padding: '2rem',
+    textAlign: 'center',
+  },
+});
 
 
 function App() {
   const [count, setCount] = useState(0)
   const navigate = useNavigate();
 
+  const cssClass = useStyles();
+
   const gotoHome = () => {
     navigate('/home');
   };
 
   return (
-    <>
+    <div className={cssClass.appContainer}>
       <div className="center">
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
@@ -26,7 +39,7 @@ function App() {
         </a>
       </div>
       <h2>Built with Vite + React</h2>
-      
+
       <div className="card center">
         <Button appearance="primary" onClick={() => gotoHome() }>Get started</Button>
       </div>
@@ -40,7 +53,7 @@ function App() {
       </button> */}
 
 
-    </>
+    </div>
   )
 }
 

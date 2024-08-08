@@ -9,17 +9,16 @@ import Home from './app/Home.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-      <FluentProvider theme={webLightTheme}>
-      <Router>
-            <Routes>
-              <Route path="/" element={<App />} />
-              <Route path="/home" element={<Home />}>
-                {/* <Navbar /> */}
-                {/* <Route path="subroute1" element={<subComp1 />} />
-                <Route path="subroute2" element={<subComp2 />} /> */}
-              </Route>
-            </Routes>
-      </Router>
+      <FluentProvider theme={webLightTheme} className='appRoot'>
+        <Router>
+              <Routes>
+                <Route path="/" element={<App />} />
+                <Route path="/home/*" element={<Home />}>
+                  {/* <Route path="subroute1" element={<subComp1 />} />
+                  OR DEFINE CHILD ROUTES, see HOME component. */}
+                </Route>
+              </Routes>
+        </Router>
       </FluentProvider>
   </React.StrictMode>,
 )

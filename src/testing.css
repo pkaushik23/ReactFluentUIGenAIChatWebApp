@@ -1,0 +1,27 @@
+.top {
+  /* width: 100%; */
+   /* Max height set to 50px */
+  /* max-height: 50px; */
+  /* Ensure it occupies the full height defined */
+  /* height: 50px;  */
+  /* For visualization */
+  background-color: lightgreen; 
+}
+
+.content {
+  display: flex; /* Make content a flex container */
+  flex-grow: 1; /* Ensure it takes the remaining height */
+}
+
+.left {
+  width: 25%;
+  height: 100%; /* Full height of the content area */
+  background-color: lightblue; /* For visualization */
+}
+
+.right {
+  width: 75%;
+  height: 100%; /* Full height of the content area */
+  overflow-y: auto; /* Add vertical scrollbar if content overflows */
+  background-color: lightcoral; /* For visualization */
+}

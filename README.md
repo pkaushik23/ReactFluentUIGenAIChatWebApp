@@ -66,6 +66,8 @@ export default {
 1. Integrate FluentUI
 2. Enable Routing
 3. useNavigateHook
+4. tried ```makeStyles``` from ```FluentUI```
+5. Improved ```HomeComponent```
 
 
 
