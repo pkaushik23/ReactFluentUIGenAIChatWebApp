@@ -3,6 +3,7 @@ import React from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import Placeholder from './Placeholder';
 import { makeStyles } from '@fluentui/react-components';
+
 import '../testing.css'
 
 const useStyles = makeStyles({
@@ -24,7 +25,7 @@ const useStyles = makeStyles({
         backgroundColor: 'lightblue' 
     },
     right:{
-        width: '75%',
+        flexGrow: 1,
         height: '100%', /* Full height of the content area */
         overflowY: 'auto', /* Add vertical scrollbar if content overflows */
         backgroundColor: 'lightcoral' /* For visualization */
