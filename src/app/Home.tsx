@@ -42,6 +42,9 @@ const useStyles = makeStyles({
         boxSizing: 'border-box',
         overflowY: 'auto',
         flexShrink: 0,
+        display: 'flex',
+        flexDirection: 'column',
+        height:'100%'
     },
     sidebarCollapsed: {
         width: '0',
@@ -114,10 +117,10 @@ const Home: React.FC = () => {
                 <div className={cssClass.content}>
                 
                     <div className={mergeClasses(cssClass.sidebar, isSidebarCollapsed? cssClass.sidebarCollapsed:cssClass.sidebarExpanded)}>
-                        {/* <Navbar /> */}
                         {!isSidebarCollapsed && renderHamburgerWithToolTip()}
                         <Divider inset appearance='strong' style={{ margin: '7px 0 0 0', padding:0 }}/>
-                        <nav>
+                        <Navbar />
+                        {/* <nav>
                             <ul className={cssClass.menuItems}>
                                 <li>
                                     <Link to="/">Main Page</Link>
@@ -129,7 +132,7 @@ const Home: React.FC = () => {
                                     <Link to="settings">Settings</Link>
                                 </li>
                             </ul>
-                        </nav>
+                        </nav> */}
                     </div>
                     <div className={cssClass.main}>
                         {isSidebarCollapsed && renderHamburgerWithToolTip()} 
