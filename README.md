@@ -69,7 +69,11 @@ export default {
 4. tried ```makeStyles``` from ```FluentUI```
 5. Improved ```HomeComponent```
 6. Theme switcher
-
+7. Hamburger on Home Component, used conditionality to render a html markup. Example below
+  ```js
+  {!isSidebarCollapsed && renderHamburgerWithToolTip()}
+  ```
+8.
 
 
 

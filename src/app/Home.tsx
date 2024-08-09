@@ -2,7 +2,10 @@
 import React, { useState } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import Placeholder from './Placeholder';
-import { makeStyles, tokens, FluentProvider, webLightTheme, webDarkTheme, Switch, useId, Label } from '@fluentui/react-components';
+import { makeStyles, tokens, FluentProvider, webLightTheme, webDarkTheme, Switch, useId, Label, shorthands, mergeClasses, Tooltip } from '@fluentui/react-components';
+import Navbar from '../components/Navbar';
+
+import { Hamburger } from '@fluentui/react-nav-preview';
 //import '../testing.css'
 
 
@@ -83,14 +86,58 @@ const useStyles = makeStyles({
         display: 'flex',
         alignItems: 'center',
         gap: '8px', // Optional: Adds some space between the label and the switch
-    }
+    },
+    sidebarN: {
+        backgroundColor: '#f3f2f1',
+        transition: 'width 0.3s',
+        ...shorthands.padding('10px'),
+        boxSizing: 'border-box',
+        overflowY: 'auto',
+        flexShrink: 0,
+      },
+    sidebarCollapsed: {
+        //width: '10px',
+        // display:'none'
+        width: '0',
+        visibility: 'hidden',
+        padding: '0', 
+    },
+    sidebarExpanded: {
+        width: '200px',
+    },
+    toggleButton: {
+        marginBottom: '10px',
+        width: '100%',
+    },
+    menuItems: {
+        listStyleType: 'none',
+        padding: 0,
+        margin: 0,
+    },
+    
     
 
   });
 
+
+
 const Home: React.FC = () => {
     const cssClass = useStyles();
     const [isDarkTheme, setTheme] = useState(false)
+    const [isSidebarCollapsed, setSidebarCollapsed] = useState(false);
+
+    const toggleSidebar = () => {
+        setSidebarCollapsed(!isSidebarCollapsed);
+      };
+    
+    const renderHamburgerWithToolTip = () => {
+        return (
+            <><Tooltip content="Toggle Navbar" relationship="description">
+                <Hamburger onClick={() => toggleSidebar()} /></Tooltip> 
+            </>
+        );
+    };
+
     return (
         <FluentProvider theme={isDarkTheme ? webDarkTheme:webLightTheme} className='appRoot'>
             <div className={cssClass.root}>
@@ -108,7 +155,10 @@ const Home: React.FC = () => {
                         </div>
                 </div>
                 <div className={cssClass.contentNew}>
-                    <div className={cssClass.sidebar}>
+                
+                    <div className={mergeClasses(cssClass.sidebar, isSidebarCollapsed? cssClass.sidebarCollapsed:cssClass.sidebarExpanded)}>
+                        {/* <Navbar /> */}
+                        {!isSidebarCollapsed && renderHamburgerWithToolTip()}
                         <nav>
                             <ul>
                                 <li>
@@ -124,6 +174,7 @@ const Home: React.FC = () => {
                         </nav>
                     </div>
                     <div className={cssClass.mainNew}>
+                        {isSidebarCollapsed && renderHamburgerWithToolTip()} 
                         OUTLET
                         {/* Following is ROUTER OUTLET */}
                         <Routes>
