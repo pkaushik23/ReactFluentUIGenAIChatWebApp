@@ -68,6 +68,7 @@ export default {
 3. useNavigateHook
 4. tried ```makeStyles``` from ```FluentUI```
 5. Improved ```HomeComponent```
+6. Theme switcher
 
 
 

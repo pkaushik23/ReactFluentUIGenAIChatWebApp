@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM  from 'react-dom/client'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { FluentProvider, webLightTheme } from '@fluentui/react-components';
+// import { FluentProvider, webLightTheme, webDarkTheme } from '@fluentui/react-components';
 
 import App from './App.tsx'
 import './index.css'
@@ -9,7 +9,7 @@ import Home from './app/Home.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-      <FluentProvider theme={webLightTheme} className='appRoot'>
+      <div className='appRoot'>
         <Router>
               <Routes>
                 <Route path="/" element={<App />} />
@@ -19,6 +19,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
                 </Route>
               </Routes>
         </Router>
-      </FluentProvider>
+      </div>
   </React.StrictMode>,
 )
