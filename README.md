@@ -73,7 +73,7 @@ export default {
   ```js
   {!isSidebarCollapsed && renderHamburgerWithToolTip()}
   ```
-8.
+8. Dynamic Navbar with a ```Typed``` prop
 
 
 

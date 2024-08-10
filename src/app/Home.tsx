@@ -6,6 +6,8 @@ import { makeStyles, tokens, FluentProvider, webLightTheme, webDarkTheme, Switch
 import Navbar from '../components/Navbar';
 
 import { Hamburger } from '@fluentui/react-nav-preview';
+import {Utility} from '../utils'
+
 //import '../testing.css'
 
 
@@ -76,8 +78,6 @@ const useStyles = makeStyles({
     },
   });
 
-
-
 const Home: React.FC = () => {
     const cssClass = useStyles();
     const [isDarkTheme, setTheme] = useState(false)
@@ -119,7 +119,7 @@ const Home: React.FC = () => {
                     <div className={mergeClasses(cssClass.sidebar, isSidebarCollapsed? cssClass.sidebarCollapsed:cssClass.sidebarExpanded)}>
                         {!isSidebarCollapsed && renderHamburgerWithToolTip()}
                         <Divider inset appearance='strong' style={{ margin: '7px 0 0 0', padding:0 }}/>
-                        <Navbar />
+                        <Navbar navBarInfo={Utility.generateSampleNavbar()}/>
                         {/* <nav>
                             <ul className={cssClass.menuItems}>
                                 <li>
