@@ -3,7 +3,7 @@ import { Button } from '@fluentui/react-components';
 
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-import './App.css'
+
 import { useNavigate } from 'react-router-dom';
 import { makeStyles } from '@fluentui/react-components';
 
@@ -30,6 +30,19 @@ function App() {
 
   return (
     <div className={cssClass.appContainer}>
+      
+      <h1>Rite GPT</h1>
+      Built with React and Vite
+
+      <div className="card center">
+        <h3>
+          <button className='button' onClick={() => gotoHome() }>Get started</button>
+        </h3>
+      </div>
+
+      <p className="read-the-docs center">
+          learn more
+      </p>
       <div className="center">
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
@@ -38,21 +51,6 @@ function App() {
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
       </div>
-      <h2>Built with Vite + React</h2>
-
-      <div className="card center">
-        <Button appearance="primary" onClick={() => gotoHome() }>Get started</Button>
-      </div>
-
-      <p className="read-the-docs center">
-          learn more
-      </p>
-
-      {/* <button onClick={() => setCount((count) => count + 1)}>
-      count is {count}
-      </button> */}
-
-
     </div>
   )
 }

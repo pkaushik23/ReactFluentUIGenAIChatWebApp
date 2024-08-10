@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 // import { FluentProvider, webLightTheme, webDarkTheme } from '@fluentui/react-components';
 
 import App from './App.tsx'
-import './index.css'
+import './site.css'
 import Home from './app/Home.tsx';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

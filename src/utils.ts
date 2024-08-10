@@ -1,4 +1,6 @@
-import { Board20Filled, Board20Regular, Board24Filled, Board24Regular, BoxMultiple20Filled, BoxMultiple20Regular, bundleIcon, HeartPulse20Filled, HeartPulse20Regular, NotePin20Filled, NotePin20Regular, Person20Filled, Person20Regular } from '@fluentui/react-icons';
+import { Board20Filled, Board20Regular, BoxMultiple20Filled, BoxMultiple20Regular, 
+    bundleIcon, HeartPulse20Filled, HeartPulse20Regular, NotePin20Filled, NotePin20Regular, 
+    Person20Filled, Person20Regular } from '@fluentui/react-icons';
 import { INavBarInfo, INavItemClickable, INavSection } from './components/types/Navbar';
 
 const personIcon = bundleIcon(Person20Filled, Person20Regular);
