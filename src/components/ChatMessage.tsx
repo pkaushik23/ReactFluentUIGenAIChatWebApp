@@ -1,4 +1,5 @@
 import { Avatar,makeStyles,shorthands,Text, tokens  } from '@fluentui/react-components';
+import { PersonLightningRegular } from '@fluentui/react-icons';
 import React from 'react';
 
 interface ChatMessageProps {
@@ -39,11 +40,11 @@ const ChatMessage : React.FC<ChatMessageProps> = ({user,message,isSender}) => {
     
     return (
         <div className={styles.messageRow}>
-        {!isSender && <Avatar name={user} className={styles.avatar}/>}
-        <div className={`${styles.messageBubble} ${isSender ? styles.sentMessage : styles.receivedMessage}`}>
-            <Text>{message} - This is an example of the Text.</Text>
-        </div>
-        {isSender && <Avatar name={user} className={styles.avatar}/>}
+            {!isSender && <Avatar className={styles.avatar} icon={<PersonLightningRegular/>}/>}
+            <div className={`${styles.messageBubble} ${isSender ? styles.sentMessage : styles.receivedMessage}`}>
+                <Text>{message} - This is an example of the Text.</Text>
+            </div>
+            {isSender && <Avatar name={user} className={styles.avatar} />}
         </div>
     );
     };
