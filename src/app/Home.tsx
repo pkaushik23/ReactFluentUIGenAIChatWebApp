@@ -2,13 +2,13 @@
 import React, { useState } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import Placeholder from './Placeholder';
-import { makeStyles, tokens, FluentProvider, webLightTheme, webDarkTheme, Switch, useId, Label, mergeClasses, Tooltip, Divider } from '@fluentui/react-components';
+import { makeStyles, tokens, FluentProvider, webLightTheme, webDarkTheme, Switch, useId, Label, mergeClasses, Tooltip, Divider, MenuItem } from '@fluentui/react-components';
 import Navbar from '../components/Navbar';
 
 import { Hamburger } from '@fluentui/react-nav-preview';
 import {Utility} from '../utils'
-
-//import '../testing.css'
+import { Person20Regular } from '@fluentui/react-icons';
+import ChatBox from '../components/ChatBox';
 
 
 const useStyles = makeStyles({
@@ -60,11 +60,14 @@ const useStyles = makeStyles({
         backgroundColor: tokens.colorNeutralBackground3,
         borderRadius: tokens.borderRadiusLarge,
         flexGrow: 1,
+        flexShrink: 1,
+        display:'flex',
+        flexDirection:'column',
         padding: '10px',
         margin:'5px 5px 5px 0',
         boxSizing: 'border-box',
-        overflowY: 'scroll',
-        flexShrink: 1,
+        //overflowY: 'scroll',
+        
     },
     rightGroup: {
         display: 'flex',
@@ -115,33 +118,30 @@ const Home: React.FC = () => {
                         </div>
                 </div>
                 <div className={cssClass.content}>
-                
                     <div className={mergeClasses(cssClass.sidebar, isSidebarCollapsed? cssClass.sidebarCollapsed:cssClass.sidebarExpanded)}>
                         {!isSidebarCollapsed && renderHamburgerWithToolTip()}
                         <Divider inset appearance='strong' style={{ margin: '7px 0 0 0', padding:0 }}/>
-                        <Navbar navBarInfo={Utility.generateSampleNavbar()}/>
-                        {/* <nav>
-                            <ul className={cssClass.menuItems}>
-                                <li>
-                                    <Link to="/">Main Page</Link>
-                                </li>
-                                <li>
-                                    <Link to="profile">About Us</Link>
-                                </li>
-                                <li>
-                                    <Link to="settings">Settings</Link>
-                                </li>
+                         {/* <Navbar navBarInfo={Utility.generateSampleNavbar()}/> */}
+                         <Navbar>
+                            <ul>
+                                <li>one</li>
+                                <li>Two</li>
                             </ul>
-                        </nav> */}
+                         </Navbar>
                     </div>
                     <div className={cssClass.main}>
-                        {isSidebarCollapsed && renderHamburgerWithToolTip()} 
-                        <Label size='large' weight='semibold'>User Area</Label>
-                        <Divider inset appearance='strong' style={{ margin: '10px 0 0 0', padding:0 }}/>
+                        <div>
+                            {isSidebarCollapsed && renderHamburgerWithToolTip()} 
+                            <Label size='large' weight='semibold'>Welcome</Label>
+                            <Divider inset appearance='strong' style={{ margin: '10px 0 0 0', padding:0 }}/>
+                        </div>
+                        
                         {/* Following is ROUTER OUTLET */}
                         <Routes>
+                            <Route path="" element={<ChatBox chatInfo={{}}  />} />
                             <Route path="profile" element={<Placeholder name='About Us' />} />
                             <Route path="settings" element={<Placeholder name='Settings' />} />
+                            <Route path="chat" element={<Placeholder name='chat' hideLorem={true} />} />
                         </Routes>
                     </div>
                 </div>
