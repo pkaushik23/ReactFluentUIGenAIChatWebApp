@@ -44,7 +44,7 @@ const ChatMessage : React.FC<ChatMessageProps> = ({user,message,isSender}) => {
         <div className={styles.messageRow}>
             {!isSender && <Avatar className={styles.avatar} icon={<PersonLightningRegular/>}/>}
             <div className={`${styles.messageBubble} ${isSender ? styles.sentMessage : styles.receivedMessage}`}>
-                <Text>{message} - This is an example of the Text.</Text>
+                <Text>{message}</Text>
             </div>
             {isSender && <Avatar name={user} className={styles.avatar} />}
         </div>

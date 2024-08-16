@@ -20,14 +20,14 @@ import axios, { AxiosRequestConfig, AxiosResponse, AxiosError, CancelTokenSource
 
 // Create an instance of axios with default settings
 const axiosInstance = axios.create({
-  timeout: 5000, // Set a timeout of 5 seconds for all requests
+  //timeout: 5000, // Set a timeout of 5 seconds for all requests
 });
 
 // Request interceptor to add authorization headers or other custom logic
 axiosInstance.interceptors.request.use(
   (config) => {
-    // You can modify the request config here, for example, by adding headers
-    config.headers['Authorization'] = 'Bearer xxxxxx';
+    // modify the request config here, for example, by adding headers
+    //config.headers['Authorization'] = 'Bearer xxxxxx';
     return config;
   },
   (error) => {
@@ -52,7 +52,8 @@ axiosInstance.interceptors.response.use(
 export const apiRequest = async <T>(
   method: Method,
   url: string,
-  params: Record<string, any> = {},
+  params: Record<string, any> = {}, //for query string
+  data?:any,//for request body
   cancelToken?: CancelTokenSource // Optional cancel token for request cancellation
 ): Promise<T> => {
   try {
@@ -60,6 +61,10 @@ export const apiRequest = async <T>(
       url,
       method,
       params,
+      data,
+      // headers: {
+      //   'Content-Type': 'application/json', // Explicitly set Content-Type
+      // }//not requrired axios does it internally,
       cancelToken: cancelToken?.token, // Attach the cancel token if provided
     };
 

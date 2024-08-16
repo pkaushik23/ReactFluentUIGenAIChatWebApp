@@ -53,8 +53,8 @@ const ChatBox : React.FC<ChatBoxProps> = ({chatInfo}) => {
     const [inputValue, setInputValue] = useState('');
 
     const [msgs, setMsgs] = useState<IChatMsgInfo[]>([
-      {isHumanMsg:true,msg:"What is the capital of India",id:crypto.randomUUID()},
-      {isHumanMsg:false,msg:"New Delhi is the capital of Republic of India",id:crypto.randomUUID()},
+      // {isHumanMsg:true,msg:"What is the capital of India",id:crypto.randomUUID()},
+      // {isHumanMsg:false,msg:"New Delhi is the capital of Republic of India",id:crypto.randomUUID()},
     ])
 
     const onHumanMsgSent = async () => {
@@ -63,11 +63,14 @@ const ChatBox : React.FC<ChatBoxProps> = ({chatInfo}) => {
       });
       
       
-      const response = await apiRequest<any>('get','https://jsonplaceholder.typicode.com/posts/1');
+      const response = await apiRequest<any>('POST',
+                      'http://localhost:7071/api/HttpExample',{},
+                      {name:inputValue});
+      // const response = await apiRequest<any>('get','https://jsonplaceholder.typicode.com/posts/1');
       // Update state with the response data
       console.log(response);
       setMsgs((currentValue)=>{
-        return [...currentValue,{isHumanMsg:false,msg:response.body,id:crypto.randomUUID()}]
+        return [...currentValue,{isHumanMsg:false,msg:response,id:crypto.randomUUID()}]
       });
       setInputValue('');
     }
