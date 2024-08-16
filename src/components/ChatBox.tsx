@@ -1,5 +1,6 @@
-import { Avatar, Button, Input, Label, makeStyles, shorthands, tokens,Text  } from '@fluentui/react-components';
-import { BorderAll16Filled } from '@fluentui/react-icons';
+import {  Button, Input, makeStyles, shorthands  } from '@fluentui/react-components';
+import { getApiData } from '../services/apiHelper';
+
 import React, { useState } from 'react';
 import ChatMessage from './ChatMessage';
 
@@ -56,8 +57,18 @@ const ChatBox : React.FC<ChatBoxProps> = ({chatInfo}) => {
       {isHumanMsg:false,msg:"New Delhi is the capital of Republic of India",id:crypto.randomUUID()},
     ])
 
-    function onHumanMsgSent(){
-      setMsgs([...msgs,{isHumanMsg:true,msg:inputValue,id:crypto.randomUUID()}]);
+    const onHumanMsgSent = async () => {
+      setMsgs((currentValue)=>{
+        return [...currentValue,{isHumanMsg:true,msg:inputValue,id:crypto.randomUUID()}]
+      });
+      
+      
+      const response = await getApiData<any>('https://jsonplaceholder.typicode.com/posts/1');
+      // Update state with the response data
+      console.log(response);
+      setMsgs((currentValue)=>{
+        return [...currentValue,{isHumanMsg:false,msg:response.body,id:crypto.randomUUID()}]
+      });
       setInputValue('');
     }
 

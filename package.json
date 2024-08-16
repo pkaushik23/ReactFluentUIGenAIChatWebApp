@@ -11,12 +11,13 @@
   },
   "dependencies": {
     "@fluentui/react-components": "^9.54.8",
+    "@fluentui/react-icons": "latest",
+    "@fluentui/react-nav-preview": "latest",
     "@types/react-router-dom": "^5.3.3",
+    "axios": "^1.7.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.26.0",
-    "@fluentui/react-nav-preview": "latest",
-    "@fluentui/react-icons": "latest"
+    "react-router-dom": "^6.26.0"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",

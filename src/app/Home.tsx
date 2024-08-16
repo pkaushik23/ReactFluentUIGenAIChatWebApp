@@ -7,7 +7,7 @@ import Navbar from '../components/Navbar';
 
 import { Hamburger } from '@fluentui/react-nav-preview';
 import {Utility} from '../utils'
-import { Person20Regular } from '@fluentui/react-icons';
+import { Person20Regular, Settings16Filled, Settings20Filled, Settings24Filled, Settings28Filled, Settings32Filled, SettingsRegular } from '@fluentui/react-icons';
 import ChatBox from '../components/ChatBox';
 
 
@@ -131,6 +131,7 @@ const Home: React.FC = () => {
                     </div>
                     <div className={cssClass.main}>
                         <div>
+                            {/* <Settings20Filled /> */}
                             {isSidebarCollapsed && renderHamburgerWithToolTip()} 
                             <Label size='large' weight='semibold'>Welcome</Label>
                             <Divider inset appearance='strong' style={{ margin: '10px 0 0 0', padding:0 }}/>
