@@ -1,5 +1,5 @@
 import {  Button, Input, makeStyles, shorthands  } from '@fluentui/react-components';
-import { getApiData } from '../services/apiHelper';
+import { apiRequest } from '../services/apiHelper';
 
 import React, { useState } from 'react';
 import ChatMessage from './ChatMessage';
@@ -63,7 +63,7 @@ const ChatBox : React.FC<ChatBoxProps> = ({chatInfo}) => {
       });
       
       
-      const response = await getApiData<any>('https://jsonplaceholder.typicode.com/posts/1');
+      const response = await apiRequest<any>('get','https://jsonplaceholder.typicode.com/posts/1');
       // Update state with the response data
       console.log(response);
       setMsgs((currentValue)=>{
