@@ -3,22 +3,11 @@ import { apiRequest } from '../services/apiHelper';
 
 import React, { useState } from 'react';
 import ChatMessage from './ChatMessage';
+import { IChatMsgInfo, IChatInfo } from './types/chat'
 
-interface IChatMsgInfo{
-  isHumanMsg:boolean,
-  msg:string
-  id:string
-}
-
-interface IChatInfo {
-    chatID?: string,
-    messages?: IChatMsgInfo[],
-    // isTerminated?:boolean,
-    // totalInputTokens?:number,
-    // totalOutputTokens?:number
-}
 interface ChatBoxProps {
-    chatInfo : IChatInfo;
+    chatInfo? : IChatInfo;
+    updateChatCollection?: (newChat:IChatInfo) => void;
 }
 
 const useStyles = makeStyles({
@@ -48,40 +37,45 @@ const useStyles = makeStyles({
     
   });
 
-const ChatBox : React.FC<ChatBoxProps> = ({chatInfo}) => {
+const ChatBox : React.FC<ChatBoxProps> = ({chatInfo, updateChatCollection}) => {
     const styles = useStyles();
     const [inputValue, setInputValue] = useState('');
 
-    const [msgs, setMsgs] = useState<IChatMsgInfo[]>([
-      // {isHumanMsg:true,msg:"What is the capital of India",id:crypto.randomUUID()},
-      // {isHumanMsg:false,msg:"New Delhi is the capital of Republic of India",id:crypto.randomUUID()},
-    ])
-
+    console.log('ChatBox');
+    // const [msgs, setMsgs] = useState<IChatMsgInfo[]>([
+    //   // {isHumanMsg:true,msg:"What is the capital of India",id:crypto.randomUUID()},
+    //   // {isHumanMsg:false,msg:"New Delhi is the capital of Republic of India",id:crypto.randomUUID()},
+    // ])
+    const [msgs, setMsgs] = useState<IChatMsgInfo[]>(chatInfo?.messages??[]);
     const onHumanMsgSent = async () => {
       setMsgs((currentValue)=>{
         return [...currentValue,{isHumanMsg:true,msg:inputValue,id:crypto.randomUUID()}]
       });
       
-      
-      const response = await apiRequest<any>('POST',
-                      'http://localhost:7071/api/HttpExample',{},
-                      {name:inputValue});
-      // const response = await apiRequest<any>('get','https://jsonplaceholder.typicode.com/posts/1');
-      // Update state with the response data
-      console.log(response);
-      setMsgs((currentValue)=>{
-        return [...currentValue,{isHumanMsg:false,msg:response,id:crypto.randomUUID()}]
-      });
+      if(!chatInfo && updateChatCollection){// means it is start if new chat, hence let the parent know it is a new chat.
+        updateChatCollection({chatID:crypto.randomUUID(),messages:[{id:crypto.randomUUID(),isHumanMsg:true,msg:inputValue}]});
+      }
+
+
+      //Do API CALL FOR ANSWER
+      // const response = await apiRequest<any>('POST',
+      //                 'http://localhost:7071/api/HttpExample',{},
+      //                 {name:inputValue});
+      // // const response = await apiRequest<any>('get','https://jsonplaceholder.typicode.com/posts/1');
+      // // Update state with the response data
+      // console.log(response);
+      // setMsgs((currentValue)=>{
+      //   return [...currentValue,{isHumanMsg:false,msg:response,id:crypto.randomUUID()}]
+      // });
       setInputValue('');
     }
 
     return (
         <>
         {
-            !chatInfo.chatID ? 
+            !chatInfo?.chatID ? 
                   <div className={styles.chatContainer}>
                         <p>Hello, How can i help? Start by asking a question.</p>
-                        sample chat
                         <div className={styles.messagesContainer}>
                             {
                               msgs.map((i)=>{

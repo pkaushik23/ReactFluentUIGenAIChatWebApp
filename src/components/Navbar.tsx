@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { Button, Divider, Label, makeStyles, MenuItem, MenuList} from '@fluentui/react-components';
 import { Link } from 'react-router-dom';
-import {INavBarInfo} from './types/Navbar';
+import { INavBarInfo } from '../models/types/navBarTypes';
 
 interface NavBarProps {
   navBarInfo?: INavBarInfo; 
@@ -25,7 +25,7 @@ const styles = makeStyles({
 
 
 
-const Navbar: React.FC<NavBarProps> = ({navBarInfo,children}) => {
+const NavBar: React.FC<NavBarProps> = ({navBarInfo,children}) => {
   const cssClass = styles();
   
   const getSimpleNavBar = (navBarInfo:INavBarInfo) =>{
@@ -114,4 +114,4 @@ const Navbar: React.FC<NavBarProps> = ({navBarInfo,children}) => {
   );
 }
 
-export default Navbar;
+export default NavBar;

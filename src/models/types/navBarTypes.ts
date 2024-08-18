@@ -29,4 +29,3 @@ export interface INavBarInfo{
     footer: INavSection,
     body: INavSection
 }
-

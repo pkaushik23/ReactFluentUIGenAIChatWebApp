@@ -3,12 +3,13 @@ import React, { useState } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import Placeholder from './Placeholder';
 import { makeStyles, tokens, FluentProvider, webLightTheme, webDarkTheme, Switch, useId, Label, mergeClasses, Tooltip, Divider, MenuItem } from '@fluentui/react-components';
-import Navbar from '../components/Navbar';
+import NavBar from '../components/NavBar';
 
 import { Hamburger } from '@fluentui/react-nav-preview';
-import {Utility} from '../utils'
+// import {Utility} from '../utils'
 import { Person20Regular, Settings16Filled, Settings20Filled, Settings24Filled, Settings28Filled, Settings32Filled, SettingsRegular } from '@fluentui/react-icons';
 import ChatBox from '../components/ChatBox';
+import { IChatInfo } from '../models/types/chatTypes';
 
 
 const useStyles = makeStyles({
@@ -79,12 +80,21 @@ const useStyles = makeStyles({
         padding: '5px',
         margin: '5px',
     },
+    chatList: {
+        listStyleType: 'none',
+        // padding: '5px',
+        // margin: '5px',
+        marginLeft:'-34px'
+    },
+
   });
 
 const Home: React.FC = () => {
     const cssClass = useStyles();
     const [isDarkTheme, setTheme] = useState(false)
     const [isSidebarCollapsed, setSidebarCollapsed] = useState(false);
+    const [chatCollection, setChatCollection] = useState<IChatInfo[]>([])
+
 
     const toggleSidebar = () => {
         setSidebarCollapsed(!isSidebarCollapsed);
@@ -99,6 +109,12 @@ const Home: React.FC = () => {
             </>
         );
     };
+
+    const updateChatCollection = (newChat:IChatInfo) =>{
+        setChatCollection((currentValue)=>{
+            return [newChat,...currentValue]
+          });
+    }
 
     return (
         <FluentProvider theme={isDarkTheme ? webDarkTheme:webLightTheme} className='appRoot'>
@@ -122,12 +138,17 @@ const Home: React.FC = () => {
                         {!isSidebarCollapsed && renderHamburgerWithToolTip()}
                         <Divider inset appearance='strong' style={{ margin: '7px 0 0 0', padding:0 }}/>
                          {/* <Navbar navBarInfo={Utility.generateSampleNavbar()}/> */}
-                         <Navbar>
-                            <ul>
-                                <li>one</li>
-                                <li>Two</li>
+                         <NavBar>
+                            { chatCollection.length > 0 &&
+                            <ul className={cssClass.chatList}>
+                                {
+                                    chatCollection.map((chat,index) =>{
+                                        return <li key={index}>{chat.chatID}</li>
+                                    })
+                                }
                             </ul>
-                         </Navbar>
+                            }
+                         </NavBar>
                     </div>
                     <div className={cssClass.main}>
                         <div>
@@ -139,10 +160,10 @@ const Home: React.FC = () => {
                         
                         {/* Following is ROUTER OUTLET */}
                         <Routes>
-                            <Route path="" element={<ChatBox chatInfo={{}}  />} />
+                            <Route path="" element={<ChatBox updateChatCollection={updateChatCollection} />} />
+                            <Route path="chat/:id" element={<Placeholder name='chat' hideLorem={true} />} />
                             <Route path="profile" element={<Placeholder name='About Us' />} />
                             <Route path="settings" element={<Placeholder name='Settings' />} />
-                            <Route path="chat" element={<Placeholder name='chat' hideLorem={true} />} />
                         </Routes>
                     </div>
                 </div>
