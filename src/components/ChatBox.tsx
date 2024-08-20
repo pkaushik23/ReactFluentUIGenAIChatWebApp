@@ -1,13 +1,14 @@
-import {  Button, Input, makeStyles, shorthands  } from '@fluentui/react-components';
+import {  Button, Input, makeStyles, shorthands, useId  } from '@fluentui/react-components';
 import { apiRequest } from '../services/apiHelper';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ChatMessage from './ChatMessage';
-import { IChatMsgInfo, IChatInfo } from './types/chat'
+import { IChatMsgInfo, IChatInfo } from '../models/types/chatTypes'
+import { useMasterChatDataContext } from '../contexts/masterChatDataContext';
+import { useNavigate, useParams } from 'react-router-dom';
 
 interface ChatBoxProps {
-    chatInfo? : IChatInfo;
-    updateChatCollection?: (newChat:IChatInfo) => void;
+    chatInfo? : IChatInfo; //NOT REQUIRED
 }
 
 const useStyles = makeStyles({
@@ -37,25 +38,62 @@ const useStyles = makeStyles({
     
   });
 
-const ChatBox : React.FC<ChatBoxProps> = ({chatInfo, updateChatCollection}) => {
+const ChatBox : React.FC<ChatBoxProps> = ({chatInfo}) => {
+
+    const componentID = useId();
+    console.log('ChatBox componentID:',componentID);
+    // console.log('ChatBox, why this is called twice?');
+    const navigate = useNavigate();
+    
+    const { id } = useParams(); // Extracts the id parameter from the route
+
+
+    //Use masterChatContext
+    let chatDataContext = useMasterChatDataContext();
+    //console.log('Context chat Data',chatDataContext);
+
+
     const styles = useStyles();
+
+    //useState hooks
     const [inputValue, setInputValue] = useState('');
 
-    console.log('ChatBox');
-    // const [msgs, setMsgs] = useState<IChatMsgInfo[]>([
-    //   // {isHumanMsg:true,msg:"What is the capital of India",id:crypto.randomUUID()},
-    //   // {isHumanMsg:false,msg:"New Delhi is the capital of Republic of India",id:crypto.randomUUID()},
-    // ])
-    const [msgs, setMsgs] = useState<IChatMsgInfo[]>(chatInfo?.messages??[]);
+    // get chats based on the chatID in the query string params.
+    let currentChat:IChatInfo|undefined;
+    if(id){
+      currentChat = chatDataContext.getChatByID(id)
+    }
+
+    const [msgs, setMsgs] = useState<IChatMsgInfo[]>(currentChat?.messages??[]);
+    
+    //useEffect, as when the component reloading is not happening, then msgs are not updated with currentChat.
+    useEffect(() => {
+      if (currentChat?.messages) {
+          setMsgs(currentChat.messages);
+      }
+    }, [currentChat]);
+
     const onHumanMsgSent = async () => {
+      let humanMessage = {isHumanMsg:true,msg:inputValue,id:crypto.randomUUID()};
       setMsgs((currentValue)=>{
-        return [...currentValue,{isHumanMsg:true,msg:inputValue,id:crypto.randomUUID()}]
+        return [...currentValue,humanMessage]
       });
       
-      if(!chatInfo && updateChatCollection){// means it is start if new chat, hence let the parent know it is a new chat.
-        updateChatCollection({chatID:crypto.randomUUID(),messages:[{id:crypto.randomUUID(),isHumanMsg:true,msg:inputValue}]});
-      }
+      // if(!chatInfo && updateChatCollection){// means it is start if new chat, hence let the parent know it is a new chat.
+      //   updateChatCollection({chatID:crypto.randomUUID(),messages:[{id:crypto.randomUUID(),isHumanMsg:true,msg:inputValue}]});
+      // }
 
+      if(chatDataContext.updateChatCollection){
+        let msgs =[humanMessage];
+        if(!currentChat){
+          currentChat = {chatID : crypto.randomUUID()};
+        }
+        chatDataContext.updateChatCollection({chatID:currentChat.chatID, messages:msgs});
+        if(!id){ //means coming from newChat
+          navigate(`../chat/${currentChat.chatID}`);
+        }
+        
+      }
 
       //Do API CALL FOR ANSWER
       // const response = await apiRequest<any>('POST',
@@ -69,13 +107,16 @@ const ChatBox : React.FC<ChatBoxProps> = ({chatInfo, updateChatCollection}) => {
       // });
       setInputValue('');
     }
-
+    
     return (
         <>
+        {id && <p>Chat ID: {id}</p>} 
+        { id && msgs.length < 1 && <span>Not able to find chat history.</span>}
+        {!id  && <p>Hello, How can i help? Start by asking a question.</p>}
+        
         {
             !chatInfo?.chatID ? 
                   <div className={styles.chatContainer}>
-                        <p>Hello, How can i help? Start by asking a question.</p>
                         <div className={styles.messagesContainer}>
                             {
                               msgs.map((i)=>{
@@ -90,10 +131,11 @@ const ChatBox : React.FC<ChatBoxProps> = ({chatInfo, updateChatCollection}) => {
                         </div>
                     </div>
                  :<p>chat history</p>
-                    
         }
         </>
     )
 }
 
 export default ChatBox
+
+

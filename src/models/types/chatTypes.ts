@@ -11,3 +11,10 @@ export interface IChatInfo {
   // totalInputTokens?:number,
   // totalOutputTokens?:number
 }
+
+export interface MasterChatDataContextType  {
+  // chats: IChatInfo[];
+  getChatByID: (id:string) => IChatInfo|undefined;
+  getChatCollection: () => IChatInfo[]; 
+  updateChatCollection: (chatInfo:IChatInfo) => void;
+}

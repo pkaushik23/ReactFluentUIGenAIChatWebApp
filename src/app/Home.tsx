@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route, Link, Navigate, useNavigate } from 'react-router-dom';
 import Placeholder from './Placeholder';
-import { makeStyles, tokens, FluentProvider, webLightTheme, webDarkTheme, Switch, useId, Label, mergeClasses, Tooltip, Divider, MenuItem } from '@fluentui/react-components';
+import { makeStyles, tokens, FluentProvider, webLightTheme, webDarkTheme, Switch, useId, Label, mergeClasses, Tooltip, Divider, MenuItem, Button } from '@fluentui/react-components';
 import NavBar from '../components/NavBar';
 
 import { Hamburger } from '@fluentui/react-nav-preview';
@@ -10,6 +10,9 @@ import { Hamburger } from '@fluentui/react-nav-preview';
 import { Person20Regular, Settings16Filled, Settings20Filled, Settings24Filled, Settings28Filled, Settings32Filled, SettingsRegular } from '@fluentui/react-icons';
 import ChatBox from '../components/ChatBox';
 import { IChatInfo } from '../models/types/chatTypes';
+import MasterChatDataProvider from '../contexts/masterChatDataContextProvider';
+import { useMasterChatDataContext } from '../contexts/masterChatDataContext';
+
 
 
 const useStyles = makeStyles({
@@ -84,17 +87,21 @@ const useStyles = makeStyles({
         listStyleType: 'none',
         // padding: '5px',
         // margin: '5px',
-        marginLeft:'-34px'
+        marginLeft:'-34px',
+        cursor: 'pointer' 
     },
 
   });
 
 const Home: React.FC = () => {
     const cssClass = useStyles();
+    const navigate = useNavigate();
     const [isDarkTheme, setTheme] = useState(false)
     const [isSidebarCollapsed, setSidebarCollapsed] = useState(false);
-    const [chatCollection, setChatCollection] = useState<IChatInfo[]>([])
-
+    //const [chatCollection, setChatCollection] = useState<IChatInfo[]>([])
+    //Use masterChatContext hook
+    let chatDataContext = useMasterChatDataContext();
+    
 
     const toggleSidebar = () => {
         setSidebarCollapsed(!isSidebarCollapsed);
@@ -110,14 +117,15 @@ const Home: React.FC = () => {
         );
     };
 
-    const updateChatCollection = (newChat:IChatInfo) =>{
-        setChatCollection((currentValue)=>{
-            return [newChat,...currentValue]
-          });
-    }
+    // const updateChatCollection = (newChat:IChatInfo) =>{
+    //     setChatCollection((currentValue)=>{
+    //         return [newChat,...currentValue]
+    //       });
+    // }
 
     return (
         <FluentProvider theme={isDarkTheme ? webDarkTheme:webLightTheme} className='appRoot'>
+            
             <div className={cssClass.root}>
                 <div className={cssClass.header}>
                         <h2>Tomato Corp.</h2>
@@ -134,38 +142,55 @@ const Home: React.FC = () => {
                         </div>
                 </div>
                 <div className={cssClass.content}>
-                    <div className={mergeClasses(cssClass.sidebar, isSidebarCollapsed? cssClass.sidebarCollapsed:cssClass.sidebarExpanded)}>
-                        {!isSidebarCollapsed && renderHamburgerWithToolTip()}
-                        <Divider inset appearance='strong' style={{ margin: '7px 0 0 0', padding:0 }}/>
-                         {/* <Navbar navBarInfo={Utility.generateSampleNavbar()}/> */}
-                         <NavBar>
-                            { chatCollection.length > 0 &&
-                            <ul className={cssClass.chatList}>
-                                {
-                                    chatCollection.map((chat,index) =>{
-                                        return <li key={index}>{chat.chatID}</li>
-                                    })
-                                }
-                            </ul>
-                            }
-                         </NavBar>
-                    </div>
-                    <div className={cssClass.main}>
-                        <div>
-                            {/* <Settings20Filled /> */}
-                            {isSidebarCollapsed && renderHamburgerWithToolTip()} 
-                            <Label size='large' weight='semibold'>Welcome</Label>
-                            <Divider inset appearance='strong' style={{ margin: '10px 0 0 0', padding:0 }}/>
+                    {/* <MasterChatDataProvider> */}
+                        <div className={mergeClasses(cssClass.sidebar, isSidebarCollapsed? cssClass.sidebarCollapsed:cssClass.sidebarExpanded)}>
+                            {!isSidebarCollapsed && renderHamburgerWithToolTip()}
+                            <Divider inset appearance='strong' style={{ margin: '7px 0 0 0', padding:0 }}/>
+                            {/* <Navbar navBarInfo={Utility.generateSampleNavbar()}/> */}
+                            <NavBar>
+                                {/* { chatCollection.length > 0 &&
+                                <ul className={cssClass.chatList}>
+                                    {
+                                        chatCollection.map((chat,index) =>{
+                                            return <li key={index}>{chat.chatID}</li>
+                                        })
+                                    }
+                                </ul>
+                                } */}
+                                <ul className={cssClass.chatList}>
+                                    <li>Chat List</li>
+                                    {
+                                        
+                                        chatDataContext.getChatCollection().map((chat,index) =>{
+                                            return <li key={index} onClick = {() => navigate(`chat/${chat.chatID}`)}>
+                                                        {chat.chatID} 
+                                                    </li>
+                                        })
+                                    }
+                                </ul>
+
+                            </NavBar>
                         </div>
-                        
-                        {/* Following is ROUTER OUTLET */}
-                        <Routes>
-                            <Route path="" element={<ChatBox updateChatCollection={updateChatCollection} />} />
-                            <Route path="chat/:id" element={<Placeholder name='chat' hideLorem={true} />} />
-                            <Route path="profile" element={<Placeholder name='About Us' />} />
-                            <Route path="settings" element={<Placeholder name='Settings' />} />
-                        </Routes>
-                    </div>
+                        <div className={cssClass.main}>
+                            <div>
+                                {/* <Settings20Filled /> */}
+                                {isSidebarCollapsed && renderHamburgerWithToolTip()} 
+                                <Label size='large' weight='semibold'>Welcome</Label>
+                                <Button onClick={() => navigate('/home') } style={{ margin: '0 0 0 10px', padding:'5px' }}>Start New Chat</Button>
+                                <Divider inset appearance='strong' style={{ margin: '10px 0 0 0', padding:0 }}/>
+                                
+                            </div>
+                            
+                            {/* Following is ROUTER OUTLET */}
+                            <Routes>
+                                <Route path="" element={<Navigate to="newchat" />} />
+                                <Route path="newchat" element={<ChatBox/>} />
+                                <Route path="chat/:id" element={<ChatBox/>} />
+                                {/* <Route path="profile" element={<Placeholder name='About Us' />} />
+                                <Route path="settings" element={<Placeholder name='Settings' />} /> */}
+                            </Routes>
+                        </div>
+                    {/* </MasterChatDataProvider> */}
                 </div>
             </div>
         </FluentProvider>
