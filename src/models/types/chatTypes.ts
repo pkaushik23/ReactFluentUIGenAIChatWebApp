@@ -1,10 +1,12 @@
 export interface IChatMsgInfo {
+  createDateTime:Date,
   isHumanMsg: boolean,
   msg: string
   id: string
 }
 
 export interface IChatInfo {
+  createDateTime:Date,
   chatID?: string,
   messages?: IChatMsgInfo[],
   // isTerminated?:boolean,

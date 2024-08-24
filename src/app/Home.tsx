@@ -6,11 +6,7 @@ import { makeStyles, tokens, FluentProvider, webLightTheme, webDarkTheme, Switch
 import NavBar from '../components/NavBar';
 
 import { Hamburger } from '@fluentui/react-nav-preview';
-// import {Utility} from '../utils'
-import { Person20Regular, Settings16Filled, Settings20Filled, Settings24Filled, Settings28Filled, Settings32Filled, SettingsRegular } from '@fluentui/react-icons';
 import ChatBox from '../components/ChatBox';
-import { IChatInfo } from '../models/types/chatTypes';
-import MasterChatDataProvider from '../contexts/masterChatDataContextProvider';
 import { useMasterChatDataContext } from '../contexts/masterChatDataContext';
 
 
@@ -90,6 +86,12 @@ const useStyles = makeStyles({
         marginLeft:'-34px',
         cursor: 'pointer' 
     },
+    ellipsis: {
+        whiteSpace: 'nowrap',       
+        overflow: 'hidden',        
+        textOverflow: 'ellipsis',   
+        maxWidth: '80%'
+      }
 
   });
 
@@ -142,28 +144,16 @@ const Home: React.FC = () => {
                         </div>
                 </div>
                 <div className={cssClass.content}>
-                    {/* <MasterChatDataProvider> */}
                         <div className={mergeClasses(cssClass.sidebar, isSidebarCollapsed? cssClass.sidebarCollapsed:cssClass.sidebarExpanded)}>
                             {!isSidebarCollapsed && renderHamburgerWithToolTip()}
                             <Divider inset appearance='strong' style={{ margin: '7px 0 0 0', padding:0 }}/>
-                            {/* <Navbar navBarInfo={Utility.generateSampleNavbar()}/> */}
                             <NavBar>
-                                {/* { chatCollection.length > 0 &&
                                 <ul className={cssClass.chatList}>
+                                    <li> <Label size='large' weight='semibold'>Chat List</Label></li>
                                     {
-                                        chatCollection.map((chat,index) =>{
-                                            return <li key={index}>{chat.chatID}</li>
-                                        })
-                                    }
-                                </ul>
-                                } */}
-                                <ul className={cssClass.chatList}>
-                                    <li>Chat List</li>
-                                    {
-                                        
                                         chatDataContext.getChatCollection().map((chat,index) =>{
-                                            return <li key={index} onClick = {() => navigate(`chat/${chat.chatID}`)}>
-                                                        {chat.chatID} 
+                                            return <li className={cssClass.ellipsis} key={index} onClick = {() => navigate(`chat/${chat.chatID}`)} title={chat.messages?.[0].msg}>
+                                                        {chat.messages?.[0].msg}
                                                     </li>
                                         })
                                     }
@@ -173,7 +163,6 @@ const Home: React.FC = () => {
                         </div>
                         <div className={cssClass.main}>
                             <div>
-                                {/* <Settings20Filled /> */}
                                 {isSidebarCollapsed && renderHamburgerWithToolTip()} 
                                 <Label size='large' weight='semibold'>Welcome</Label>
                                 <Button onClick={() => navigate('/home') } style={{ margin: '0 0 0 10px', padding:'5px' }}>Start New Chat</Button>
@@ -190,7 +179,6 @@ const Home: React.FC = () => {
                                 <Route path="settings" element={<Placeholder name='Settings' />} /> */}
                             </Routes>
                         </div>
-                    {/* </MasterChatDataProvider> */}
                 </div>
             </div>
         </FluentProvider>

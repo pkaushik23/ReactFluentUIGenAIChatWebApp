@@ -1,15 +1,11 @@
 import {  Button, Input, makeStyles, shorthands, useId  } from '@fluentui/react-components';
-import { apiRequest } from '../services/apiHelper';
 
 import React, { useEffect, useState } from 'react';
 import ChatMessage from './ChatMessage';
 import { IChatMsgInfo, IChatInfo } from '../models/types/chatTypes'
 import { useMasterChatDataContext } from '../contexts/masterChatDataContext';
 import { useNavigate, useParams } from 'react-router-dom';
-
-interface ChatBoxProps {
-    chatInfo? : IChatInfo; //NOT REQUIRED
-}
+import  *  as chatApi from '../services/chatApi';
 
 const useStyles = makeStyles({
     chatContainer: {
@@ -38,73 +34,71 @@ const useStyles = makeStyles({
     
   });
 
-const ChatBox : React.FC<ChatBoxProps> = ({chatInfo}) => {
+const ChatBox : React.FC = () => {
 
-    const componentID = useId();
-    console.log('ChatBox componentID:',componentID);
-    // console.log('ChatBox, why this is called twice?');
+    // const componentID = useId();
+    // console.log('ChatBox componentID:',componentID);
     const navigate = useNavigate();
-    
     const { id } = useParams(); // Extracts the id parameter from the route
-
-
     //Use masterChatContext
-    let chatDataContext = useMasterChatDataContext();
-    //console.log('Context chat Data',chatDataContext);
-
-
+    let chatDataContext = useMasterChatDataContext();//console.log('Context chat Data',chatDataContext);
     const styles = useStyles();
-
     //useState hooks
     const [inputValue, setInputValue] = useState('');
-
     // get chats based on the chatID in the query string params.
-    let currentChat:IChatInfo|undefined;
+    let currentChatInfo:IChatInfo|undefined;
     if(id){
-      currentChat = chatDataContext.getChatByID(id)
+      currentChatInfo = chatDataContext.getChatByID(id)
+      
     }
 
-    const [msgs, setMsgs] = useState<IChatMsgInfo[]>(currentChat?.messages??[]);
-    
+    const [msgs, setMsgs] = useState<IChatMsgInfo[]>(currentChatInfo?.messages??[]);
+
     //useEffect, as when the component reloading is not happening, then msgs are not updated with currentChat.
     useEffect(() => {
-      if (currentChat?.messages) {
-          setMsgs(currentChat.messages);
+      if (currentChatInfo?.messages) {
+          setMsgs(currentChatInfo.messages);
+          //   //&& (new Date().getTime()  - currentChat.messages[0].createDateTime.getTime() < 2 ) 
+          if(currentChatInfo.messages.length == 1 ){
+            //if current's msg count is 1, and dateTime create is only few seconds apart then call get_gen_ai_response.
+            chatApi.getAIResponse(currentChatInfo.messages[0].msg).then(response => {
+              if(currentChatInfo){ // TODO : why is this necessary
+                chatDataContext.updateChatCollection({chatID:currentChatInfo.chatID, messages:[response],createDateTime:currentChatInfo.createDateTime});
+                setMsgs((currentValue)=>{
+                  return [...currentValue,response]
+                });
+              }
+            });
+          }
+          
       }
-    }, [currentChat]);
+    }, [currentChatInfo]);
 
     const onHumanMsgSent = async () => {
-      let humanMessage = {isHumanMsg:true,msg:inputValue,id:crypto.randomUUID()};
+      let humanMessage = {isHumanMsg:true,msg:inputValue,id:crypto.randomUUID(), createDateTime: new Date()};
       setMsgs((currentValue)=>{
         return [...currentValue,humanMessage]
       });
       
-      // if(!chatInfo && updateChatCollection){// means it is start if new chat, hence let the parent know it is a new chat.
-      //   updateChatCollection({chatID:crypto.randomUUID(),messages:[{id:crypto.randomUUID(),isHumanMsg:true,msg:inputValue}]});
-      // }
-
       if(chatDataContext.updateChatCollection){
         let msgs =[humanMessage];
-        if(!currentChat){
-          currentChat = {chatID : crypto.randomUUID()};
+        if(!currentChatInfo){
+          currentChatInfo = {chatID : crypto.randomUUID(), createDateTime: new Date()};
         }
-        chatDataContext.updateChatCollection({chatID:currentChat.chatID, messages:msgs});
+        chatDataContext.updateChatCollection({chatID:currentChatInfo.chatID, messages:msgs,createDateTime:currentChatInfo.createDateTime});
         if(!id){ //means coming from newChat
-          navigate(`../chat/${currentChat.chatID}`);
+          navigate(`../chat/${currentChatInfo.chatID}`);
+        } 
+        else {
+          const response = await chatApi.getAIResponse(inputValue);
+          if(response) {
+              chatDataContext.updateChatCollection({chatID:currentChatInfo.chatID, messages:[response],createDateTime:currentChatInfo.createDateTime});
+              setMsgs((currentValue)=>{
+                return [...currentValue,response]
+              });
+          };
         }
-        
       }
-
-      //Do API CALL FOR ANSWER
-      // const response = await apiRequest<any>('POST',
-      //                 'http://localhost:7071/api/HttpExample',{},
-      //                 {name:inputValue});
-      // // const response = await apiRequest<any>('get','https://jsonplaceholder.typicode.com/posts/1');
-      // // Update state with the response data
-      // console.log(response);
-      // setMsgs((currentValue)=>{
-      //   return [...currentValue,{isHumanMsg:false,msg:response,id:crypto.randomUUID()}]
-      // });
       setInputValue('');
     }
     
@@ -115,22 +109,20 @@ const ChatBox : React.FC<ChatBoxProps> = ({chatInfo}) => {
         {!id  && <p>Hello, How can i help? Start by asking a question.</p>}
         
         {
-            !chatInfo?.chatID ? 
-                  <div className={styles.chatContainer}>
-                        <div className={styles.messagesContainer}>
-                            {
-                              msgs.map((i)=>{
-                                return <ChatMessage id={i.id} user={i.isHumanMsg?'User':'AI'} message={i.msg} isSender={i.isHumanMsg} key={i.id}/>
-                              })
-                            }
-                        </div>
-                        <div className={styles.inputContainer}>
-                            <Input className={styles.inputField} placeholder="Type a message" 
-                                    value={inputValue} onChange={e => setInputValue(e.target.value)}/>
-                            <Button onClick={() =>onHumanMsgSent()}>Send</Button>
-                        </div>
-                    </div>
-                 :<p>chat history</p>
+          <div className={styles.chatContainer}>
+                <div className={styles.messagesContainer}>
+                    {
+                      msgs.map((i)=>{
+                        return <ChatMessage id={i.id} user={i.isHumanMsg?'User':'AI'} message={i.msg} isSender={i.isHumanMsg} key={i.id}/>
+                      })
+                    }
+                </div>
+                <div className={styles.inputContainer}>
+                    <Input className={styles.inputField} placeholder="Type a message" 
+                            value={inputValue} onChange={e => setInputValue(e.target.value)}/>
+                    <Button onClick={async () => await onHumanMsgSent()}>Send</Button>
+                </div>
+            </div>
         }
         </>
     )

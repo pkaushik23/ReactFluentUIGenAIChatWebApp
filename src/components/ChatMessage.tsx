@@ -24,8 +24,8 @@ const useStyles = makeStyles({
       maxWidth: '60%',
     },
     sentMessage: {
-        marginLeft: 'auto',
-        backgroundColor: tokens.colorNeutralBackground1,
+      marginLeft: 'auto',
+      backgroundColor: tokens.colorNeutralBackground1,
     },
     receivedMessage: {
       backgroundColor: tokens.colorBrandBackground,
