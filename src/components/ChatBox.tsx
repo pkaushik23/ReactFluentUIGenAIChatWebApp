@@ -172,7 +172,7 @@ const ChatBox : React.FC = () => {
                 <div className={styles.messagesContainer}>
                     {
                       msgs.map((i)=>{
-                        return i.id ?<ChatMessage id={i.id} user={i.isHumanMsg?'User':'AI'} message={i.msg} isSender={i.isHumanMsg} key={i.id}/>:null
+                        return i.id ?<ChatMessage id={i.id} user={i.isHumanMsg?'User':'AI'} message={i.msg} isHumanMsg={i.isHumanMsg} key={i.id}/>:null
                       })
                     }
                 </div>

@@ -9,7 +9,7 @@ import { API_URL } from '../config/config';
 0)  Deploy to Azure.
 1)  streaming response.[DONE]
 2)  Cancellable API request
-3)  formatter viewer in the chat, for example viewer to show the code and markdown.
+3)  formatter viewer in the chat, for example viewer to show the code and markdown. [DONE, 'ReactMarkdown' and 'remarkGfm']
 4)  logger
 5)  App level error handling
 6)  Db persistance
