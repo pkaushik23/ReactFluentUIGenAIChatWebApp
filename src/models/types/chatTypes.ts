@@ -1,8 +1,8 @@
 export interface IChatMsgInfo {
-  createDateTime:Date,
+  createDateTime?:Date,
   isHumanMsg: boolean,
   msg: string
-  id: string
+  id?: string
 }
 
 export interface IChatInfo {

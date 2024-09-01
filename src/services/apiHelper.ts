@@ -94,3 +94,78 @@ export const apiRequest = async <T>(
 //   // Cancel the request (if necessary)
 //   cancelTokenSource.cancel('Operation canceled by the user.');
 // };
+
+
+export const streamedApiRequest =  async function* (
+  url: string,
+  method: string = 'GET',
+  data?: any
+): AsyncGenerator<string> {
+  const controller = new AbortController();
+  const { signal } = controller;
+
+  try {
+    // Build query string for GET requests if needed
+    if (method === 'GET' && data) {
+      const queryParams = new URLSearchParams(data).toString();
+      url += `?${queryParams}`;
+    }
+
+    const response = await fetch(url, {
+      method, // 'GET' or 'POST'
+      headers: {
+        //Authorization: 'Bearer auth-token', //TODO
+        'Content-Type': 'application/json', // or other appropriate content type
+      },
+      body: method === 'POST' ? JSON.stringify(data) : undefined, // Only send body for POST requests
+      signal, // Attach the signal for request cancellation
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    if (!response.body) {
+      throw new Error('ReadableStream not supported in this environment');
+    }
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) {
+        console.log('Streaming completed');
+        break;
+      }
+      const chunk = decoder.decode(value, { stream: true });
+      yield chunk; // Yield each chunk as it becomes available
+    }
+  } catch (error:any) {
+    if (error.name === 'AbortError') {
+      console.log('Request was canceled');
+    } else {
+      console.error('Fetch error:', error);
+      throw error; // Rethrow error to allow consumers to handle it
+    }
+  }
+};
+
+
+
+
+//Example of stram consumer
+// async function consumeStream() {
+//   const url = 'https://your-api-url';
+//   const method = 'GET'; // or 'POST'
+//   const data = { param1: 'value1', param2: 'value2' }; // Optional data
+
+//   try {
+//     for await (const chunk of streamedApiRequest(url, method, data)) {
+//       console.log('Received chunk:', chunk);
+//       // You can process the chunk here, e.g., update UI, save to a file, etc.
+//     }
+//   } catch (error) {
+//     console.error('Error during stream consumption:', error);
+//   }
+// }
