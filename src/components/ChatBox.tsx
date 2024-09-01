@@ -111,7 +111,8 @@ const ChatBox : React.FC = () => {
       }
     }, [currentChatInfo]);
 
-    const onHumanMsgSent = async () => {
+    const onHumanMsgSent = async (e:any) => {
+      e.preventDefault();
       setInputValue('');
       let humanMessage = {isHumanMsg:true,msg:inputValue,id:crypto.randomUUID(), createDateTime: new Date()};
       setMsgs((currentValue)=>{
@@ -176,11 +177,13 @@ const ChatBox : React.FC = () => {
                       })
                     }
                 </div>
-                <div className={styles.inputContainer}>
-                    <Input className={styles.inputField} placeholder="Type a message" 
-                            value={inputValue} onChange={e => setInputValue(e.target.value)}/>
-                    <Button onClick={async () => await onHumanMsgSent()}>Send</Button>
-                </div>
+                <form className='read-the-docs' onSubmit={onHumanMsgSent}>
+                  <div className={styles.inputContainer}>
+                      <Input className={styles.inputField} placeholder="Type a message" 
+                              value={inputValue} onChange={e => setInputValue(e.target.value)}/>
+                      <Button type="submit">Send</Button>
+                  </div>
+                </form>
             </div>
         }
         </>
