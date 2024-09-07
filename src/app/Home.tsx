@@ -153,7 +153,7 @@ const Home: React.FC = () => {
                         <div className={mergeClasses(cssClass.sidebar, isSidebarCollapsed? cssClass.sidebarCollapsed:cssClass.sidebarExpanded)}>
                             {!isSidebarCollapsed && renderHamburgerWithToolTip()}
                             <Divider inset appearance='strong' style={{ margin: '7px 0 0 0', padding:0 }}/>
-                            <NavBar>
+                            {/* <NavBar>
                                 <ul className={cssClass.chatList}>
                                     <li> <Label size='large' weight='semibold'>Chat List</Label></li>
                                     {
@@ -165,7 +165,7 @@ const Home: React.FC = () => {
                                     }
                                 </ul>
 
-                            </NavBar>
+                            </NavBar> */}
                         </div>
                         <div className={cssClass.main}>
                             <div>
