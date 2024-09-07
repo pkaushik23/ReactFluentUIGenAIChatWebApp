@@ -8,6 +8,9 @@ import NavBar from '../components/NavBar';
 import { Hamburger } from '@fluentui/react-nav-preview';
 import ChatBox from '../components/ChatBox';
 import { useMasterChatDataContext } from '../contexts/masterChatDataContext';
+import { useIsAuthenticated, useMsal } from '@azure/msal-react';
+import SignOut from '../components/SignOut';
+import SignIn from '../components/SignIn';
 
 
 
@@ -100,11 +103,12 @@ const Home: React.FC = () => {
     const navigate = useNavigate();
     const [isDarkTheme, setTheme] = useState(false)
     const [isSidebarCollapsed, setSidebarCollapsed] = useState(false);
-    //const [chatCollection, setChatCollection] = useState<IChatInfo[]>([])
+    
     //Use masterChatContext hook
     let chatDataContext = useMasterChatDataContext();
+    const { instance, accounts } = useMsal();
+    const isAuthenticated = useIsAuthenticated();
     
-
     const toggleSidebar = () => {
         setSidebarCollapsed(!isSidebarCollapsed);
       };
@@ -141,6 +145,8 @@ const Home: React.FC = () => {
                                 aria-labelledby={useId("link-label")}
                             />
                             <Label  size='small'>Dark</Label>
+                            <Divider inset vertical appearance='strong' style={{ height: "100%" }}/>
+                            {isAuthenticated ? <SignOut /> : <SignIn />}
                         </div>
                 </div>
                 <div className={cssClass.content}>
@@ -164,7 +170,7 @@ const Home: React.FC = () => {
                         <div className={cssClass.main}>
                             <div>
                                 {isSidebarCollapsed && renderHamburgerWithToolTip()} 
-                                <Label size='large' weight='semibold'>Welcome</Label>
+                                <Label size='large' weight='semibold'>Welcome {accounts[0].name}</Label>
                                 <Button onClick={() => navigate('/home') } style={{ margin: '0 0 0 10px', padding:'5px' }}>Start New Chat</Button>
                                 <Divider inset appearance='strong' style={{ margin: '10px 0 0 0', padding:0 }}/>
                                 
