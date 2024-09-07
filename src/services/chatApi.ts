@@ -3,8 +3,8 @@ import { apiRequest, streamedApiRequest } from "./apiHelper";
 import { API_URL } from '../config/config';
 
 /*TODO:
-
--2)
+-3) 
+-2) Login, MSAL [Done]
 -1) url and other settings to read from config [DONE] "/config/config.ts"
 0)  Deploy to Azure.
 1)  streaming response.[DONE]
