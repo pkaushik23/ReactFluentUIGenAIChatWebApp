@@ -6,11 +6,11 @@ import { makeStyles, tokens, FluentProvider, webLightTheme, webDarkTheme, Switch
 
 import { Hamburger } from '@fluentui/react-nav-preview';
 import ChatBox from '../components/ChatBox';
-// import { useMasterChatDataContext } from '../contexts/masterChatDataContext';
+import { useMasterChatDataContext } from '../contexts/masterChatDataContext';
 import { useIsAuthenticated, useMsal } from '@azure/msal-react';
 import SignOut from '../components/SignOut';
 import SignIn from '../components/SignIn';
-// import NavBar from '../components/NavBar';
+import NavBar from '../components/NavBar';
 
 
 
@@ -105,7 +105,7 @@ const Home: React.FC = () => {
     const [isSidebarCollapsed, setSidebarCollapsed] = useState(false);
     
     //Use masterChatContext hook
-    // let chatDataContext = useMasterChatDataContext();
+    let chatDataContext = useMasterChatDataContext();
     // const { instance, accounts } = useMsal();
     const { accounts } = useMsal();
     const isAuthenticated = useIsAuthenticated();
@@ -153,7 +153,7 @@ const Home: React.FC = () => {
                         <div className={mergeClasses(cssClass.sidebar, isSidebarCollapsed? cssClass.sidebarCollapsed:cssClass.sidebarExpanded)}>
                             {!isSidebarCollapsed && renderHamburgerWithToolTip()}
                             <Divider inset appearance='strong' style={{ margin: '7px 0 0 0', padding:0 }}/>
-                            {/* <NavBar>
+                            <NavBar>
                                 <ul className={cssClass.chatList}>
                                     <li> <Label size='large' weight='semibold'>Chat List</Label></li>
                                     {
@@ -165,7 +165,7 @@ const Home: React.FC = () => {
                                     }
                                 </ul>
 
-                            </NavBar> */}
+                            </NavBar>
                         </div>
                         <div className={cssClass.main}>
                             <div>
