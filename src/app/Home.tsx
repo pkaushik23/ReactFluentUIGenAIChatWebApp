@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { makeStyles, tokens, FluentProvider, webLightTheme, webDarkTheme, Switch, useId, Label, mergeClasses, Tooltip, Divider, Button } from '@fluentui/react-components';
-import NavBar from '../components/NavBar';
+
 
 import { Hamburger } from '@fluentui/react-nav-preview';
 import ChatBox from '../components/ChatBox';
@@ -10,6 +10,7 @@ import { useMasterChatDataContext } from '../contexts/masterChatDataContext';
 import { useIsAuthenticated, useMsal } from '@azure/msal-react';
 import SignOut from '../components/SignOut';
 import SignIn from '../components/SignIn';
+import NavBar from '../components/NavBar';
 
 
 
