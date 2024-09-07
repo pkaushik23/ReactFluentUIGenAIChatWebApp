@@ -6,6 +6,10 @@ import viteLogo from '/vite.svg'
 
 import { useNavigate } from 'react-router-dom';
 import { makeStyles } from '@fluentui/react-components';
+import SignIn from './components/SignIn';
+import SignOut from './components/SignOut';
+import { useIsAuthenticated } from '@azure/msal-react';
+
 
 //Try FluentStyling here.
 const useStyles = makeStyles({
@@ -19,7 +23,6 @@ const useStyles = makeStyles({
 
 
 function App() {
-  const [count, setCount] = useState(0)
   const navigate = useNavigate();
 
   const cssClass = useStyles();
@@ -27,14 +30,15 @@ function App() {
   const gotoHome = () => {
     navigate('/home');
   };
+  const isAuthenticated = useIsAuthenticated();
 
   return (
     <div className={cssClass.appContainer}>
-      
       <h1>Rite GPT</h1>
       Built with React and Vite
 
       <div className="card center">
+         {isAuthenticated ? <SignOut /> : <SignIn />}
         <h3>
           <button className='button' onClick={() => gotoHome() }>Get started</button>
         </h3>

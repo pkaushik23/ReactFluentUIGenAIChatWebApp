@@ -7,20 +7,33 @@ import App from './App.tsx'
 import './site.css'
 import Home from './app/Home.tsx';
 import MasterChatDataProvider from './contexts/masterChatDataContextProvider.tsx';
+import ProtectedRoute from './components/ProtectedRoute.tsx';
 
+import { MsalProvider } from '@azure/msal-react';
+import { PublicClientApplication } from '@azure/msal-browser';
+import { msalConfig } from './config/config.ts';
+
+
+const msalInstance = new PublicClientApplication(msalConfig);
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
       <div className='appRoot'>
         <MasterChatDataProvider>
+        <MsalProvider instance={msalInstance}>
           <Router>
                 <Routes>
                   <Route path="/" element={<App />} />
-                    <Route path="/home/*" element={<Home />}>
-                      {/* <Route path="subroute1" element={<subComp1 />} />
-                      OR DEFINE CHILD ROUTES, see HOME component. */}
-                    </Route>
+                  <Route path="/home/*" element={
+                    <ProtectedRoute>
+                      <Home />
+                    </ProtectedRoute>
+                  }>
+                  {/* <Route path="subroute1" element={<subComp1 />} />
+                  OR DEFINE CHILD ROUTES, see HOME component. */}
+                  </Route>
                 </Routes>
           </Router>
+          </MsalProvider>
         </MasterChatDataProvider>
       </div>
   </React.StrictMode>,
