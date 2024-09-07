@@ -9,7 +9,8 @@
       ".js": "application/javascript",
       ".mjs": "application/javascript",
       ".css": "text/css",
-      ".html": "text/html"
+      ".html": "text/html",
+      ".svg": "image/svg+xml"
     }
   }
   
