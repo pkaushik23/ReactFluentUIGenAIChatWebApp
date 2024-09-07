@@ -1,9 +1,11 @@
-import { loginRequest } from "../config/config";
+
+import { getConfig } from "../config/config";
 import { LoginFlow } from "../models/types/appTypes";
 import { IPublicClientApplication, RedirectRequest } from "@azure/msal-browser";
 
 export const handleLogin = async (instance:IPublicClientApplication,loginType:LoginFlow, state?:any) => {
     await instance.initialize();
+    const { loginRequest } = await getConfig();
     let request:RedirectRequest = {...loginRequest};
     if(state){
         request.state = state;

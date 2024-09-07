@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Button, Divider, Label, makeStyles, MenuItem, MenuList} from '@fluentui/react-components';
+import { Divider, Label, makeStyles, MenuItem} from '@fluentui/react-components';
 import { Link } from 'react-router-dom';
 import { INavBarInfo } from '../models/types/navBarTypes';
 
@@ -97,13 +97,13 @@ const NavBar: React.FC<NavBarProps> = ({navBarInfo,children}) => {
     );
   }
 
-  const getNavBarInfoBtn = (navBarInfo:INavBarInfo) =>{
-    return(
-      <>
-      <Button onClick={()=>{console.log(navBarInfo)}}> See NavInfo</Button>
-      </>
-    )
-  }
+  // const getNavBarInfoBtn = (navBarInfo:INavBarInfo) =>{
+  //   return(
+  //     <>
+  //     <Button onClick={()=>{console.log(navBarInfo)}}> See NavInfo</Button>
+  //     </>
+  //   )
+  // }
 
   return (
 

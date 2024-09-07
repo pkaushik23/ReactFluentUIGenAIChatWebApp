@@ -1,6 +1,6 @@
 import { IChatMsgInfo } from "../models/types/chatTypes";
 import { apiRequest, streamedApiRequest } from "./apiHelper";
-import { API_URL } from '../config/config';
+import { getConfig } from '../config/config';
 
 /*TODO:
 -3) 
@@ -21,6 +21,7 @@ import { API_URL } from '../config/config';
 */
 
 export const getAIResponse = async (msg:string):Promise<IChatMsgInfo> => {
+    const { API_URL } = await getConfig();
     const response = await apiRequest<any>('POST',`${API_URL}/HttpExample`,{},
                     {question:msg});
     return {isHumanMsg:false,msg:response,id:crypto.randomUUID(), createDateTime: new Date()};
@@ -28,6 +29,7 @@ export const getAIResponse = async (msg:string):Promise<IChatMsgInfo> => {
 
 export const getStreamedAIResponse = async function* (msg:string): AsyncGenerator<IChatMsgInfo> {
     let isFirstChunk = true;
+    const { API_URL } = await getConfig();
     for await (const chunk of streamedApiRequest(`${API_URL}/HttpExampleStreamed`, 'POST', { question: msg })) {
         
         let response:IChatMsgInfo = {isHumanMsg:false,msg:chunk};

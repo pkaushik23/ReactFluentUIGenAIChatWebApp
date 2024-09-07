@@ -1,7 +1,7 @@
 import { Board20Filled, Board20Regular, BoxMultiple20Filled, BoxMultiple20Regular, 
     bundleIcon, HeartPulse20Filled, HeartPulse20Regular, NotePin20Filled, NotePin20Regular, 
     Person20Filled, Person20Regular } from '@fluentui/react-icons';
-import { INavBarInfo, INavItemClickable, INavSection } from './components/types/Navbar';
+import { INavBarInfo, INavItemClickable, INavSection } from '../models/types/navBarTypes';
 
 const personIcon = bundleIcon(Person20Filled, Person20Regular);
 const homeIcon = bundleIcon(Board20Filled, Board20Regular);

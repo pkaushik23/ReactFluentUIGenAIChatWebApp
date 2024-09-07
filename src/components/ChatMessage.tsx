@@ -1,4 +1,4 @@
-import { Avatar,makeStyles,shorthands,Text, tokens  } from '@fluentui/react-components';
+import { Avatar,makeStyles,shorthands, tokens  } from '@fluentui/react-components';
 import { PersonLightningRegular } from '@fluentui/react-icons';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';

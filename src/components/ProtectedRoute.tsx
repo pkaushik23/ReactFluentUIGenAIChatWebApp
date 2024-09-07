@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import { useIsAuthenticated, useMsal } from '@azure/msal-react';
 import { handleLogin } from '../services/msalHelper';
 import { LoginFlow } from '../models/types/appTypes';

@@ -1,7 +1,7 @@
 import { LogLevel } from "@azure/msal-browser";
 
 // src/config.dev.ts
-export const API_URL = "http://localhost:7071/api";
+export const API_URL = `${import.meta.env.VITE_API_URL}/api`;
 // Add more environment-specific configurations below
 
 export const loginRequest = {
@@ -16,7 +16,7 @@ export const msalConfig = {
     auth: {
         clientId: import.meta.env.VITE_MSAL_CLIENT_ID,
         authority: `https://login.microsoftonline.com/${import.meta.env.VITE_MSAL_TENANT_ID}`,
-        redirectUri: import.meta.env.VITE_MSAL_REDIRECT_URI,
+        redirectUri: `${window.location.origin}/`,
     },
     cache: {
         cacheLocation: "sessionStorage", // This configures where your cache will be stored

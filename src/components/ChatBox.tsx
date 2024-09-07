@@ -1,4 +1,4 @@
-import {  Button, Input, makeStyles, shorthands, useId  } from '@fluentui/react-components';
+import {  Button, Input, makeStyles, shorthands  } from '@fluentui/react-components';
 
 import React, { useEffect, useState } from 'react';
 import ChatMessage from './ChatMessage';

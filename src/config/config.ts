@@ -1,10 +1,17 @@
-// src/config.ts
-let config;
+let configPromise: Promise<any>;
 
 if (import.meta.env.MODE === 'development') {
-  config = await import('./config.dev');
+  configPromise = import('./config.dev');
 } else {
-  config = await import('./config.prod');
+  configPromise = import('./config.prod');
 }
 
-export const { API_URL, graphConfig, msalConfig, loginRequest } = config;
+export const getConfig = async () => {
+  const config = await configPromise;
+  return {
+    API_URL: config.API_URL,
+    graphConfig: config.graphConfig,
+    msalConfig: config.msalConfig,
+    loginRequest: config.loginRequest,
+  };
+};
