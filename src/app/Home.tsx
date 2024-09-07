@@ -131,7 +131,6 @@ const Home: React.FC = () => {
 
     return (
         <FluentProvider theme={isDarkTheme ? webDarkTheme:webLightTheme} className='appRoot'>
-            
             <div className={cssClass.root}>
                 <div className={cssClass.header}>
                         <h2>Tomato Corp.</h2>
