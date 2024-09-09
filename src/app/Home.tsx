@@ -10,7 +10,8 @@ import { useMasterChatDataContext } from '../contexts/masterChatDataContext';
 import { useIsAuthenticated, useMsal } from '@azure/msal-react';
 import SignOut from '../components/SignOut';
 import SignIn from '../components/SignIn';
-import NavBar from '../components/NavBar';
+// import NavBar from '../components/NavBar';
+import RiteNavBar from '../components/RiteNavBar';
 
 
 
@@ -153,7 +154,7 @@ const Home: React.FC = () => {
                         <div className={mergeClasses(cssClass.sidebar, isSidebarCollapsed? cssClass.sidebarCollapsed:cssClass.sidebarExpanded)}>
                             {!isSidebarCollapsed && renderHamburgerWithToolTip()}
                             <Divider inset appearance='strong' style={{ margin: '7px 0 0 0', padding:0 }}/>
-                            <NavBar>
+                            <RiteNavBar>
                                 <ul className={cssClass.chatList}>
                                     <li> <Label size='large' weight='semibold'>Chat List</Label></li>
                                     {
@@ -165,7 +166,7 @@ const Home: React.FC = () => {
                                     }
                                 </ul>
 
-                            </NavBar>
+                            </RiteNavBar>
                         </div>
                         <div className={cssClass.main}>
                             <div>
