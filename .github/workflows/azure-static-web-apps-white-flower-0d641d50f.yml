@@ -36,6 +36,10 @@ jobs:
           api_location: "" # Api source code path - optional
           output_location: "dist" # Built app content directory - optional; default is 'build' changed to 'dist' for vite app.
           ###### End of Repository/Build Configurations ######
+        env: # Add environment variables
+          VITE_API_URL: ${{ vars.VITE_API_URL }}
+          VITE_MSAL_CLIENT_ID: ${{ vars.VITE_MSAL_CLIENT_ID }}
+          VITE_MSAL_TENANT_ID: ${{ vars.VITE_MSAL_TENANT_ID }}
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
