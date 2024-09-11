@@ -6,7 +6,7 @@ import { getConfig } from '../config/config';
 -3) 
 -2) Login, MSAL [Done]
 -1) url and other settings to read from config [DONE] "/config/config.ts"
-0)  Deploy to Azure.
+0)  Deploy to Azure. [DONE] Thin client deployed to Static web app
 1)  streaming response.[DONE]
 2)  Cancellable API request
 3)  formatter viewer in the chat, for example viewer to show the code and markdown. [DONE, 'ReactMarkdown' and 'remarkGfm']
