@@ -8,6 +8,8 @@ if (import.meta.env.MODE === 'development') {
 
 export const getConfig = async () => {
   const config = await configPromise;
+  console.log(import.meta.env.MODE);
+  config.log(config);
   return {
     API_URL: config.API_URL,
     graphConfig: config.graphConfig,
