@@ -9,7 +9,7 @@ if (import.meta.env.MODE === 'development') {
 export const getConfig = async () => {
   const config = await configPromise;
   console.log(import.meta.env.MODE);
-  config.log(config);
+  console.log(import.meta.env.VITE_API_URL);
   return {
     API_URL: config.API_URL,
     graphConfig: config.graphConfig,
