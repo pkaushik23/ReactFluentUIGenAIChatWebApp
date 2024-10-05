@@ -2,6 +2,8 @@ import { Board20Filled, Board20Regular, BoxMultiple20Filled, BoxMultiple20Regula
     bundleIcon, HeartPulse20Filled, HeartPulse20Regular, NotePin20Filled, NotePin20Regular, 
     Person20Filled, Person20Regular } from '@fluentui/react-icons';
 import { INavBarInfo, INavItemClickable, INavSection } from '../models/types/navBarTypes';
+import { UserInfo } from '../models/types/userInfo';
+
 
 const personIcon = bundleIcon(Person20Filled, Person20Regular);
 const homeIcon = bundleIcon(Board20Filled, Board20Regular);
@@ -10,7 +12,7 @@ const settingsIcon = bundleIcon(HeartPulse20Filled, HeartPulse20Regular);
 const contactIcon = bundleIcon(NotePin20Filled, NotePin20Regular);
 
 export class Utility {
-    // Static method for capitalizing the first letter of a string
+    
     public static generateSampleNavbar = (): INavBarInfo => {
         // Example app info
         const appInfo: INavItemClickable = {
@@ -121,4 +123,13 @@ export class Utility {
             body,
         };
     };
+
+    public static extractUserInfoFromIdClaims = (idTokenClaims: any):UserInfo =>{
+        return {
+            azure_ad_id: idTokenClaims.oid,
+            tenant_id: idTokenClaims.tid,
+            email: idTokenClaims.preferred_username??idTokenClaims.email,
+            full_name: idTokenClaims.name
+        }
+    }
 }

@@ -12,9 +12,11 @@ import ProtectedRoute from './components/ProtectedRoute.tsx';
 import { MsalProvider } from '@azure/msal-react';
 import { PublicClientApplication } from '@azure/msal-browser';
 import { getConfig } from './config/config.ts';
+import { initAndAttachEvents } from './services/msalHelper.ts';
 
 getConfig().then((config)=>{
   const msalInstance = new PublicClientApplication(config.msalConfig);
+  initAndAttachEvents(msalInstance);
   ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
         <div className='appRoot'>
