@@ -3,7 +3,7 @@ ReactFluentUIGenAIChatWebApp
 # ReactFluentUIGenAIChatWebApp
 * Experimenting with creating a Chat GPT like (not exact) interface with React and FluentUI
 * Scaffolding was done using **VITE**
-* Required env variables `VITE_API_URL`,`VITE_MSAL_CLIENT_ID`,`VITE_MSAL_TENANT_ID`
+* Required env variables `VITE_API_URL`,`VITE_MSAL_CLIENT_ID`,`VITE_MSAL_TENANT_ID`. For local development create a .env file and define and declare variables in the file
 * Started with Starter React and Fluent UI repo which I wrote to act as a template. https://github.com/pkaushik23/ReactFluentStarter
 
 * Added support of streaming response. try the streaming api respoonse from : https://github.com/pkaushik23/AzFuncPyFastApi; `VITE_API_URL` should have the api endpoint.
