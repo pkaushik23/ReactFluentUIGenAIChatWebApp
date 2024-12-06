@@ -41,7 +41,7 @@ function App() {
         </h3>
       </div>
 
-      <p className="read-the-docs center">
+      <p className="color-grey center">
           learn more
       </p>
       <div className="center">

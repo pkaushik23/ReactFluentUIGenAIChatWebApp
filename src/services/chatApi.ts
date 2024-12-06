@@ -21,6 +21,7 @@ import { getConfig } from '../config/config';
 */
 
 export const getAIResponse = async (msg:string):Promise<IChatMsgInfo> => {
+    
     const { API_URL } = await getConfig();
     const response = await apiRequest<any>('POST',`${API_URL}/HttpExample`,{},
                     {question:msg});
@@ -31,11 +32,11 @@ export const getStreamedAIResponse = async function* (msg:string): AsyncGenerato
     let isFirstChunk = true;
     const { API_URL } = await getConfig();
     for await (const chunk of streamedApiRequest(`${API_URL}/HttpExampleStreamed`, 'POST', { question: msg })) {
-        
         let response:IChatMsgInfo = {isHumanMsg:false,msg:chunk};
         if(isFirstChunk){
             response.id = crypto.randomUUID();
-            response.createDateTime =  new Date()
+            response.createDateTime =  new Date();
+            isFirstChunk = false;
         }
         yield response;
       }

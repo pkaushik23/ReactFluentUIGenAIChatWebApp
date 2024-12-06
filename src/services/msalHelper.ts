@@ -1,36 +1,35 @@
 
 import { getConfig } from "../config/config";
 import { LoginFlow } from "../models/types/appTypes";
-import { AuthenticationResult, EventType, IPublicClientApplication, RedirectRequest } from "@azure/msal-browser";
-import { Utility } from "../utils/utils";
-import { registerOrUpdateUser } from "./userApi";
+import { IPublicClientApplication, RedirectRequest } from "@azure/msal-browser";
 
-
-
-
-const updateOrRegisterUser = async (idTokenClaims:any) =>{
-    let userInfo = Utility.extractUserInfoFromIdClaims(idTokenClaims);
-    console.log(userInfo);
-    return await registerOrUpdateUser(userInfo)
-}
+// const updateOrRegisterUser = async (userInfo:UserInfoDb) =>{
+//     return await registerOrUpdateUser(userInfo)
+// }
 
 export const initAndAttachEvents = async (instance:IPublicClientApplication) =>{
     await instance.initialize();
+    //const { setUserInfo } = useAppContext();
     instance.addEventCallback(async(event) => {
-        if (event.eventType === EventType.LOGIN_SUCCESS) {
-            // console.log("Login was successful!", event.payload);
-            const result = event.payload as AuthenticationResult;
-            const updateUser = async () => {
-                try {
-                    await updateOrRegisterUser(result.idTokenClaims);
-                    //console.log('User updated in DB');
-                } catch (error) {
-                    console.error('Error updating user:', error);
-                    alert('Failed to update user in DB');
-                }
-            };
-            await updateUser();
-        }
+        // if (event.eventType === EventType.LOGIN_SUCCESS) {
+
+        //All of this is now done in the protectedRoute
+        //     // // console.log("Login was successful!", event.payload);
+        //     // const authResult = event.payload as AuthenticationResult;
+        //     // const updateUser = async () => {
+        //     //     try {
+        //     //             let userInfoDb = Utility.extractUserInfoFromIdClaims(authResult.idTokenClaims);
+        //     //             let userID = await updateOrRegisterUser(userInfoDb);
+        //     //             console.log('User updated in DB',userID);
+        //     //             let userInfo:UserInfo = {...userInfoDb, user_id : userID}
+        //     //             setUserInfo(userInfo);
+        //     //     } catch (error) {
+        //     //         console.error('Error updating user:', error);
+        //     //         alert('Failed to update user in DB');
+        //     //     }
+        //     // };
+        //     // await updateUser();
+        // }
     });
 }
 
@@ -43,18 +42,6 @@ export const handleLogin = async (instance:IPublicClientApplication,loginType:Lo
     }
     if (loginType === LoginFlow.Popup) {
         instance.loginPopup(request)
-        // .finally(() =>
-        //     {
-        //         console.log('updateOrRegisterUser');
-        //         if(instance.getAllAccounts().length > 0){
-        //             return updateOrRegisterUser(instance.getAllAccounts()[0]);
-        //         }    
-        //     }
-        // )
-        // .then(r => {
-        //         console.log("loginPopup",r);
-        //     }
-        // )
         .catch((e) => {
             console.log(e);
         });
@@ -63,19 +50,6 @@ export const handleLogin = async (instance:IPublicClientApplication,loginType:Lo
         .catch((e) => {
             console.log(e);
         })
-        // .then(r => {
-        //     console.log("loginRedirect",r);
-        // }
-        // )
-        // .finally(
-        //     () =>             
-        //     {   
-        //         console.log('updateOrRegisterUser');
-        //         if(instance.getAllAccounts().length > 0){
-        //             return updateOrRegisterUser(instance.getAllAccounts()[0]);
-        //         }    
-        //     }
-        // );
     }
 };
 

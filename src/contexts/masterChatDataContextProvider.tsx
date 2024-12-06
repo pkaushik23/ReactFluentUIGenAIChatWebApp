@@ -1,6 +1,7 @@
 import { ReactNode, useState } from "react";
-import { MasterChatDataContext } from "./masterChatDataContext";
+import { MasterChatDataContext } from "./useMasterChatDataContext";
 import { IChatInfo } from "../models/types/chatTypes";
+
 
 type MasterChatDataProviderProps = {
     children: ReactNode;
@@ -11,7 +12,6 @@ const MasterChatDataProvider: React.FC<MasterChatDataProviderProps> = ({children
     const[chatCollection, setChatCollection] = useState<IChatInfo[]>([]);
     
     const getChatData = ():IChatInfo[] =>{
-        //console.log('Prerak');
         if (chatCollection && chatCollection.length > 0) return chatCollection;
         //do api call here 
         return  [];
@@ -39,13 +39,12 @@ const MasterChatDataProvider: React.FC<MasterChatDataProviderProps> = ({children
         //     navigate(`chat/${chat.chatID}`);
         // }
     }
-   
 
     const getProviderData = () =>{
         return {
             getChatCollection: getChatData,
             getChatByID:getChatByID,
-            updateChatCollection:updateChatCollection
+            updateChatCollection:updateChatCollection,
         }
     }
 
@@ -53,11 +52,6 @@ const MasterChatDataProvider: React.FC<MasterChatDataProviderProps> = ({children
         <MasterChatDataContext.Provider value= {getProviderData()}>
             {children}
         </MasterChatDataContext.Provider>
-
-        //following does not work, WHY ?
-        // <MasterChatDataContext.Provider value= {{getChatData}}>
-        //     {children}
-        // </MasterChatDataContext.Provider>
     );
 }
 

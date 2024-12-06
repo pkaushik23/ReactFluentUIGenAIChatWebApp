@@ -6,7 +6,7 @@ import { makeStyles, tokens, FluentProvider, webLightTheme, webDarkTheme, Switch
 
 import { Hamburger } from '@fluentui/react-nav-preview';
 import ChatBox from '../components/ChatBox';
-import { useMasterChatDataContext } from '../contexts/masterChatDataContext';
+import { useMasterChatDataContext } from '../contexts/useMasterChatDataContext';
 import { useIsAuthenticated, useMsal } from '@azure/msal-react';
 import SignOut from '../components/SignOut';
 import SignIn from '../components/SignIn';

@@ -6,8 +6,9 @@ export interface IChatMsgInfo {
 }
 
 export interface IChatInfo {
+  userID: string;
   createDateTime:Date,
-  chatID?: string,
+  chatID: string,
   messages?: IChatMsgInfo[],
   // isTerminated?:boolean,
   // totalInputTokens?:number,
@@ -16,6 +17,7 @@ export interface IChatInfo {
 
 export interface MasterChatDataContextType  {
   // chats: IChatInfo[];
+
   getChatByID: (id:string) => IChatInfo|undefined;
   getChatCollection: () => IChatInfo[]; 
   updateChatCollection: (chatInfo:IChatInfo) => void;

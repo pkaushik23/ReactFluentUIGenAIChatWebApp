@@ -2,7 +2,7 @@ import { Board20Filled, Board20Regular, BoxMultiple20Filled, BoxMultiple20Regula
     bundleIcon, HeartPulse20Filled, HeartPulse20Regular, NotePin20Filled, NotePin20Regular, 
     Person20Filled, Person20Regular } from '@fluentui/react-icons';
 import { INavBarInfo, INavItemClickable, INavSection } from '../models/types/navBarTypes';
-import { UserInfo } from '../models/types/userInfo';
+import { UserInfo, UserInfoDb } from '../models/types/userInfo';
 
 
 const personIcon = bundleIcon(Person20Filled, Person20Regular);
@@ -124,7 +124,7 @@ export class Utility {
         };
     };
 
-    public static extractUserInfoFromIdClaims = (idTokenClaims: any):UserInfo =>{
+    public static extractUserInfoFromIdClaims = (idTokenClaims: any):UserInfoDb =>{
         return {
             azure_ad_id: idTokenClaims.oid,
             tenant_id: idTokenClaims.tid,

@@ -1,11 +1,12 @@
 import {  Button, Input, makeStyles, shorthands  } from '@fluentui/react-components';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import ChatMessage from './ChatMessage';
 import { IChatMsgInfo, IChatInfo } from '../models/types/chatTypes'
-import { useMasterChatDataContext } from '../contexts/masterChatDataContext';
+import { useMasterChatDataContext } from '../contexts/useMasterChatDataContext';
 import { useNavigate, useParams } from 'react-router-dom';
 import  *  as chatApi from '../services/chatApi';
+import { useAppContext } from '../hooks/useAppContext';
 
 const useStyles = makeStyles({
     chatContainer: {
@@ -41,8 +42,11 @@ const ChatBox : React.FC = () => {
     // console.log('ChatBox componentID:',componentID);
     const navigate = useNavigate();
     const { id } = useParams(); // Extracts the id parameter from the route
+
+    
+
     //Use masterChatContext
-    let chatDataContext = useMasterChatDataContext();//console.log('Context chat Data',chatDataContext);
+    const chatDataContext = useMasterChatDataContext();//console.log('Context chat Data',chatDataContext);
     const styles = useStyles();
     //useState hooks
     const [inputValue, setInputValue] = useState('');
@@ -54,6 +58,22 @@ const ChatBox : React.FC = () => {
     }
 
     const [msgs, setMsgs] = useState<IChatMsgInfo[]>(currentChatInfo?.messages??[]);
+    
+    const {getUserInfo} = useAppContext(); 
+    const getUserID = () => {
+      let userInfo = getUserInfo();
+      if(!userInfo.user_id){
+        throw 'userID not present';
+      }
+      return userInfo.user_id;
+    };
+    const getUserName = () => {
+      let userInfo = getUserInfo();
+      if(!userInfo.full_name){
+        throw 'full_name not present';
+      }
+      return userInfo.full_name;
+    };
 
     //useEffect, as when the component reloading is not happening, then msgs are not updated with currentChat.
     useEffect(() => {
@@ -69,7 +89,7 @@ const ChatBox : React.FC = () => {
               let lastAiMessageInState:IChatMsgInfo | undefined;
               for await (const aiResponse of generator) {
                 setMsgs((currentValue)=>{
-                  if(currentValue.length > 1){
+                  if(currentValue.length > 1) {
                     //BELOW is BAD CODE in REACT, where i am treating state as non immutable
                     //LEAVING HERE AS AN EXAMPLE OF *DONT's*
                     /* let lastAiMessageInState = currentValue[currentValue.length-1];
@@ -86,7 +106,7 @@ const ChatBox : React.FC = () => {
                 });
               }
               if(currentChatInfo && lastAiMessageInState){
-                chatDataContext.updateChatCollection({chatID:currentChatInfo.chatID, messages:[lastAiMessageInState],createDateTime:currentChatInfo.createDateTime});
+                chatDataContext.updateChatCollection({userID: getUserID(), chatID:currentChatInfo.chatID, messages:[lastAiMessageInState],createDateTime:currentChatInfo.createDateTime});
               }
             }
             
@@ -122,9 +142,9 @@ const ChatBox : React.FC = () => {
       if(chatDataContext.updateChatCollection){
         let msgs =[humanMessage];
         if(!currentChatInfo){
-          currentChatInfo = {chatID : crypto.randomUUID(), createDateTime: new Date()};
+          currentChatInfo = {userID: getUserID(), chatID : crypto.randomUUID(), createDateTime: new Date()};
         }
-        chatDataContext.updateChatCollection({chatID:currentChatInfo.chatID, messages:msgs,createDateTime:currentChatInfo.createDateTime});
+        chatDataContext.updateChatCollection({userID: getUserID(), chatID:currentChatInfo.chatID, messages:msgs,createDateTime:currentChatInfo.createDateTime});
         if(!id){ //means coming from newChat
           navigate(`../chat/${currentChatInfo.chatID}`);
         } 
@@ -153,7 +173,7 @@ const ChatBox : React.FC = () => {
               });
             }
             if(lastMsg){
-              chatDataContext.updateChatCollection({chatID:currentChatInfo.chatID, messages:[lastMsg],createDateTime:currentChatInfo.createDateTime});
+              chatDataContext.updateChatCollection({userID: getUserID(), chatID:currentChatInfo.chatID, messages:[lastMsg],createDateTime:currentChatInfo.createDateTime});
             }
           } catch (error) {
             console.error('Error during stream consumption:', error);
@@ -173,11 +193,12 @@ const ChatBox : React.FC = () => {
                 <div className={styles.messagesContainer}>
                     {
                       msgs.map((i)=>{
-                        return i.id ?<ChatMessage id={i.id} user={i.isHumanMsg?'User':'AI'} message={i.msg} isHumanMsg={i.isHumanMsg} key={i.id}/>:null
+                        return i.id ?<ChatMessage id={i.id} user={i.isHumanMsg?getUserName():'AI'} message={i.msg} isHumanMsg={i.isHumanMsg} key={i.id}/>:null
                       })
                     }
                 </div>
-                <form className='read-the-docs' onSubmit={onHumanMsgSent}>
+                <form onSubmit={onHumanMsgSent}>
+                  {/* TODO : disable text box when LLm repsose is in progress */}
                   <div className={styles.inputContainer}>
                       <Input className={styles.inputField} placeholder="Type a message" 
                               value={inputValue} onChange={e => setInputValue(e.target.value)}/>

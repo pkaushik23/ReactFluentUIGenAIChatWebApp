@@ -23,7 +23,8 @@ export const msalConfig = {
         storeAuthStateInCookie: false, // Set this to "true" if you are having issues on IE11 or Edge
     },
     system: {	
-        loggerOptions: {	
+        loggerOptions: {
+            LogLevel: LogLevel.Error,
             loggerCallback: (level:any, message:any, containsPii:any) => {	
                 if (containsPii) {		
                     return;		
@@ -32,9 +33,9 @@ export const msalConfig = {
                     case LogLevel.Error:
                         console.error(message);
                         return;
-                    case LogLevel.Info:
-                        console.info(message);
-                        return;
+                    // case LogLevel.Info:
+                    //     console.info(message);
+                    //     return;
                     case LogLevel.Verbose:
                         console.debug(message);
                         return;

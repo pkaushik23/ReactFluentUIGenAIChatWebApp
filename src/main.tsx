@@ -14,9 +14,9 @@ import { PublicClientApplication } from '@azure/msal-browser';
 import { getConfig } from './config/config.ts';
 import { initAndAttachEvents } from './services/msalHelper.ts';
 
-getConfig().then((config)=>{
+getConfig().then(async (config)=>{
   const msalInstance = new PublicClientApplication(config.msalConfig);
-  initAndAttachEvents(msalInstance);
+  await initAndAttachEvents(msalInstance);
   ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
         <div className='appRoot'>
